@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Dashboard financiero de CACITUS conectado a Google Sheets mediante Apps Script." />
+    <title>Finanzas - CACITUS</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="stylesheet" href="/frontend/styles.css" />
+  </head>
+  <body>
+    <main id="loginView" class="login-shell">
+      <section class="login-panel" aria-labelledby="loginTitle">
+        <div class="brand-mark">FC</div>
+        <p class="eyebrow">Panel administrativo</p>
+        <h1 id="loginTitle">Finanzas - CACITUS</h1>
+        <form id="loginForm" class="login-form">
+          <label>
+            Usuario
+            <input id="username" name="username" type="text" autocomplete="username" required />
+          </label>
+          <label>
+            Contraseña
+            <input id="password" name="password" type="password" autocomplete="current-password" required />
+          </label>
+          <button type="submit">Ingresar</button>
+          <p id="loginMessage" class="login-message" role="alert"></p>
+        </form>
+      </section>
+    </main>
+
+    <main id="dashboardView" class="app-shell is-hidden">
+      <aside class="sidebar" aria-label="Selector de información">
+        <div class="sidebar-brand">
+          <div class="brand-mark small">FC</div>
+          <div>
+            <strong>Finanzas - CACITUS</strong>
+            <span>Dashboard financiero</span>
+          </div>
+        </div>
+        <p class="selector-title">Consultar información de:</p>
+        <nav id="sectionMenu" class="section-menu"></nav>
+        <button id="logoutButton" class="ghost-button" type="button">Cerrar sesión</button>
+      </aside>
+
+      <section class="dashboard">
+        <header class="topbar">
+          <div>
+            <h1>Finanzas - CACITUS</h1>
+            <p>Control financiero y reportes administrativos</p>
+          </div>
+          <div class="topbar-actions">
+            <span id="syncBadge" class="sync-badge">Última sincronización: pendiente</span>
+            <button id="refreshButton" type="button">Actualizar datos</button>
+            <button id="pdfButton" type="button">Exportar PDF</button>
+          </div>
+        </header>
+
+        <section id="statusMessage" class="status-message is-hidden"></section>
+
+        <section class="kpi-grid" aria-label="Indicadores financieros">
+          <article class="kpi-card">
+            <span>Total ingresos</span>
+            <strong id="kpiIncome">₡0</strong>
+            <small id="kpiIncomeHint">$0</small>
+          </article>
+          <article class="kpi-card warning">
+            <span>Total pendiente de recaudar</span>
+            <strong id="kpiPending">₡0</strong>
+            <small>Seguimiento activo</small>
+          </article>
+          <article class="kpi-card positive">
+            <span>Total recaudado</span>
+            <strong id="kpiCollected">₡0</strong>
+            <small>Ingresos confirmados</small>
+          </article>
+          <article class="kpi-card">
+            <span>Cantidad de registros</span>
+            <strong id="kpiRecords">0</strong>
+            <small id="kpiUpdated">Última actualización: pendiente</small>
+          </article>
+        </section>
+
+        <section class="charts-grid" aria-label="Reportes gráficos">
+          <article class="chart-card">
+            <h2>Ingresos por categoría</h2>
+            <div class="chart-frame"><canvas id="barChart"></canvas></div>
+          </article>
+          <article class="chart-card">
+            <h2>Distribución de ingresos</h2>
+            <div class="chart-frame"><canvas id="pieChart"></canvas></div>
+          </article>
+          <article class="chart-card wide">
+            <h2>Ingresos por fecha</h2>
+            <div class="chart-frame trend"><canvas id="lineChart"></canvas></div>
+          </article>
+        </section>
+
+        <section class="table-card">
+          <div class="table-toolbar">
+            <div>
+              <h2 id="tableTitle">Resumen general</h2>
+              <p id="tableTotal">Total mostrado: ₡0</p>
+            </div>
+            <div class="table-controls">
+              <input id="searchInput" type="search" placeholder="Buscar" aria-label="Buscar en tabla" />
+              <select id="stateFilter" aria-label="Filtrar por estado">
+                <option value="">Todos los estados</option>
+                <option value="Recaudado">Recaudado</option>
+                <option value="Pendiente">Pendiente</option>
+                <option value="Vencido">Vencido</option>
+                <option value="Pagado">Pagado</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th data-sort="fecha">Fecha</th>
+                  <th data-sort="concepto">Concepto</th>
+                  <th data-sort="responsable">Responsable</th>
+                  <th data-sort="monto">Monto</th>
+                  <th data-sort="estado">Estado</th>
+                </tr>
+              </thead>
+              <tbody id="recordsTable"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+    <script type="module" src="/frontend/src/app.js"></script>
+  </body>
+</html>
