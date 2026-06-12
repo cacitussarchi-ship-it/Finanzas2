@@ -1,0 +1,15 @@
+{
+  "name": "finanzas-cacitus",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vercel dev",
+    "start": "vercel dev",
+    "preview": "npx serve frontend",
+    "build": "echo \"Static app ready for Vercel\""
+  },
+  "devDependencies": {
+    "serve": "^14.2.4",
+    "vercel": "^46.1.1"
+  }
+}
